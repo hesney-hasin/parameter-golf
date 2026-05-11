@@ -988,12 +988,7 @@ def main() -> None:
 
     def zero_grad_all() -> None:
         for opt in optimizers:
-            opt.step()
-        # Update EMA shadow weights after every optimizer step
-        # This slowly pulls the shadow copy toward the current weights
-        # decay=0.9999 means shadow moves very slowly = very smooth
-        ema.update(base_model)
-        zero_grad(all)
+            opt.zero_grad(set_to_none=True)
 
     max_wallclock_ms = 1000.0 * args.max_wallclock_seconds if args.max_wallclock_seconds > 0 else None
 
